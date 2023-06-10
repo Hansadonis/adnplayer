@@ -13,7 +13,7 @@ class ArtistContainer extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text("Artistes", style: GoogleFonts.signika(fontSize: 20),),
-
+          Container(),
         ],
       ),
     );
