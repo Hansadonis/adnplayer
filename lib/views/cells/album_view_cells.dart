@@ -1,3 +1,5 @@
+import 'package:adn_music_player/controller/playlist_controller.dart';
+import 'package:adn_music_player/model/enums/playlist.dart';
 import 'package:adn_music_player/model/row_model/album.dart';
 import 'package:flutter/material.dart';
 
@@ -9,6 +11,14 @@ class AlbumViewCell extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: (){
+        final route = MaterialPageRoute(builder: (context){
+          return PlaylistController(
+              playlist: album.songs,
+              title: album.title,
+              type: PlayList.album,
+          );
+        });
+        Navigator.push(context, route);
 
       },
       child: ClipRRect(
