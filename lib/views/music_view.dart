@@ -1,5 +1,6 @@
 import 'package:adn_music_player/views/list_container/album_container.dart';
 import 'package:adn_music_player/views/list_container/artiste_container.dart';
+import 'package:adn_music_player/views/list_container/genre_container.dart';
 import 'package:flutter/material.dart';
 
 class MusicView extends StatelessWidget {
@@ -15,6 +16,7 @@ class MusicView extends StatelessWidget {
           Divider(),
           Albumscontainer(),
           Divider(thickness: 2,),
+          GenreContainer(),
 
         ],
       ),

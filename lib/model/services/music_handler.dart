@@ -1,3 +1,4 @@
+import 'package:adn_music_player/model/enums/genre.dart';
 import 'package:adn_music_player/model/row_model/album.dart';
 import 'package:adn_music_player/model/row_model/artiste.dart';
 import 'package:adn_music_player/model/services/music_datas.dart';
@@ -31,4 +32,11 @@ class MusicHandler{
     return albums;
   }
 
+  List<Genre> allGenre(){
+    List<Genre> genres=[];
+    final all = datas.allDatas();
+    for (var song in all) {
+      if(!genres.contains(song.genre)) genres.add(song.genre);
+    }return genres;
+  }
 }
