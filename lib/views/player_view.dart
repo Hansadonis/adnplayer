@@ -16,13 +16,18 @@ class PlayerView extends StatelessWidget {
     required this.maxDuration,
     required this.position,
     required this.onPositionChanged,
+    required this.shuffle,
+    required this.repead,
+    required this.playPauseIcon,
+    required this.backgrounColor
   }) : super(key: key);
 
   final Song song;
   final EdgeInsets padding = const EdgeInsets.all(8);
-  final Color bg = Color.fromRGBO(Random().nextInt(256), Random().nextInt(256), Random().nextInt(256), 0.75);
   final Duration maxDuration;
   final Duration position;
+  final bool shuffle;
+  final bool repead;
 
   final Function() onRepeadPressed;
   final Function() onShufflePressed;
@@ -30,12 +35,14 @@ class PlayerView extends StatelessWidget {
   final Function() onRewindPressed;
   final Function() onForwardPresed;
   final Function(double) onPositionChanged;
+  final IconData playPauseIcon;
+  final Color backgrounColor;
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: bg,
+      backgroundColor: backgrounColor,
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,
@@ -67,7 +74,7 @@ class PlayerView extends StatelessWidget {
             Text(song.title, style: GoogleFonts.signika(fontSize: 20, fontWeight: FontWeight.bold)),
             Card(
               child: Container(
-                color: bg.withOpacity(0.75),
+                color: backgrounColor.withOpacity(0.75),
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: Column(
                   children: [
@@ -77,7 +84,7 @@ class PlayerView extends StatelessWidget {
                       children: [
                         IconButton(
                             onPressed: onRepeadPressed,
-                            icon: const Icon(Icons.repeat),
+                            icon: Icon((repead) ? Icons.repeat_on_rounded : Icons.repeat),
                         ),
 
                         Row(
@@ -85,12 +92,12 @@ class PlayerView extends StatelessWidget {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Padding(padding: padding, child: IconButton(icon: Icon(Icons.fast_rewind), onPressed: onRewindPressed,),),
-                            Padding(padding: padding, child: IconButton(icon: Icon(Icons.play_circle), onPressed: onRewindPressed,),),
-                            Padding(padding: padding, child: IconButton(icon: Icon(Icons.fast_forward), onPressed: onRewindPressed,),),
+                            Padding(padding: padding, child: IconButton(icon: Icon(playPauseIcon), onPressed: onPlayPausePressed,),),
+                            Padding(padding: padding, child: IconButton(icon: Icon(Icons.fast_forward), onPressed: onForwardPresed,),),
                           ],
                         ),
 
-                        IconButton(onPressed: onShufflePressed, icon: const Icon(Icons.shuffle))
+                        IconButton(onPressed: onShufflePressed, icon: Icon((shuffle) ? Icons.shuffle_on_rounded :Icons.shuffle))
 
                       ],
                     ),
