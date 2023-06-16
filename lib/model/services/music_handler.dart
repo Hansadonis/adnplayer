@@ -2,6 +2,7 @@ import 'package:adn_music_player/model/enums/genre.dart';
 import 'package:adn_music_player/model/row_model/album.dart';
 import 'package:adn_music_player/model/row_model/artiste.dart';
 import 'package:adn_music_player/model/services/music_datas.dart';
+import 'package:adn_music_player/model/row_model/song.dart';
 
 class MusicHandler{
   final datas = MusicDatas();
@@ -38,5 +39,27 @@ class MusicHandler{
     for (var song in all) {
       if(!genres.contains(song.genre)) genres.add(song.genre);
     }return genres;
+  }
+
+  List<Song> allMusicFromArtist(Artist artist){
+    List<Song> playlist = [];
+    final all = datas.allDatas();
+    for(var song in all){
+      if(song.artist.name == artist.name){
+        playlist.add(song);
+      }
+    }
+    return playlist;
+  }
+
+  List<Song> allMusicFromGenre(Genre genre){
+    List<Song> playlist = [];
+    final all = datas.allDatas();
+    for(var song in all){
+      if(song.genre == genre){
+        playlist.add(song);
+      }
+    }
+    return playlist;
   }
 }

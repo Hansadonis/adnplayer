@@ -62,7 +62,12 @@ class PlaylistController extends StatelessWidget {
   }
   Widget topView(Size size){
     switch(type){
-      case PlayList.artist: return Container();
+      case PlayList.artist: return Column(
+        children: [
+          ClipOval(child: Image.network(playlist.first.artist.urlImage, height: 125,),),
+          Text(playlist.first.artist.name, style: GoogleFonts.signika(fontSize: 35),),
+        ],
+      );
       case PlayList.album:
         return Container(
           child: Column(
@@ -73,7 +78,9 @@ class PlaylistController extends StatelessWidget {
             ],
           ),
         );
-      case PlayList.genre: return Container();
+      case PlayList.genre: return Center(
+        child: Text(playlist.first.genre.name, style: GoogleFonts.signika(fontSize: 35),),
+      );
       default: return Container();
     }
 

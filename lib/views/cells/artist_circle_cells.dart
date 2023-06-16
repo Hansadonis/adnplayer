@@ -1,4 +1,7 @@
+import 'package:adn_music_player/controller/playlist_controller.dart';
+import 'package:adn_music_player/model/enums/playlist.dart';
 import 'package:adn_music_player/model/row_model/artiste.dart';
+import 'package:adn_music_player/model/services/music_handler.dart';
 import 'package:flutter/material.dart';
 
 class ArtistCirclecell extends StatelessWidget {
@@ -10,7 +13,15 @@ class ArtistCirclecell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: onTap,
+      onTap: (){
+        final playlist = MusicHandler().allMusicFromArtist(artist);
+        final route = MaterialPageRoute(builder: (context) => PlaylistController(
+            playlist: playlist,
+            title: artist.name,
+            type: PlayList.artist,
+        ));
+        Navigator.push(context, route);
+      },
       child: Padding(
           padding: EdgeInsets.all(0),
         child: ClipOval(
@@ -21,7 +32,4 @@ class ArtistCirclecell extends StatelessWidget {
     );
   }
 
-  onTap(){
-
-  }
 }
