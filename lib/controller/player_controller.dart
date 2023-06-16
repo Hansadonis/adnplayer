@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:adn_music_player/model/enums/media_type.dart';
 import 'package:adn_music_player/model/row_model/song.dart';
 import 'package:adn_music_player/views/player_view.dart';
@@ -18,8 +20,8 @@ class _MyPlayersControllerState extends State<MyPlayersController> {
   late AudioPlayer audioPlayer;
   AudioCache? audioCache;
 
-  final Duration position = const Duration(seconds: 0);
-  final Duration maxDuration = const Duration(seconds: 0);
+   Duration position = const Duration(seconds: 0);
+   Duration maxDuration = const Duration(seconds: 0);
   bool playShuffle = false;
   bool repead = false;
   IconData iconData = Icons.play_circle;
@@ -57,7 +59,8 @@ class _MyPlayersControllerState extends State<MyPlayersController> {
       );
 
   onPositionChange(double newPosition){
-
+    final newDuration = Duration(seconds: newPosition.toInt());
+    audioPlayer.seek(newDuration);
   }
 
   onPlayPausePressed() async{
@@ -70,7 +73,8 @@ class _MyPlayersControllerState extends State<MyPlayersController> {
         await audioPlayer.pause();
         break;
       case PlayerState.completed:
-        onForwardPressed();
+        (repead) ? audioPlayer.seek(Duration(seconds: 0)) : onForwardPressed();
+        print("music finichh");
         break;
       case PlayerState.paused:
         await audioPlayer.resume();
@@ -81,11 +85,17 @@ class _MyPlayersControllerState extends State<MyPlayersController> {
   }
 
   onRewindPressed(){
-
+    final newSong = (playShuffle) ? randomSong() : previousSong();
+    song = newSong;
+    clearplayer();
+    seetupPlayer();
   }
 
   onForwardPressed(){
-
+    final newSong = (playShuffle) ? randomSong() : nextSong();
+    song = newSong;
+    clearplayer();
+    seetupPlayer();
   }
 
   onRepeatPressed(){
@@ -134,9 +144,23 @@ class _MyPlayersControllerState extends State<MyPlayersController> {
     });
   }
 
+  onDurationChange(Duration duration){
+    setState(() {
+      maxDuration = duration;
+    });
+  }
+
+  onAudioPositionChanged(Duration newPosition){
+    setState(() {
+      position = newPosition;
+    });
+  }
+
   seetupPlayer() async{
     audioPlayer = AudioPlayer();
     audioPlayer.onPlayerStateChanged.listen(onStateChange);
+    audioPlayer.onDurationChanged.listen(onDurationChange);
+    audioPlayer.onPositionChanged.listen(onAudioPositionChanged);
     final url = (song.mediaType == MediaType.internet) ? song.path : await pathForInApp();
     await audioPlayer.play(UrlSource(url));
   }
@@ -146,5 +170,23 @@ class _MyPlayersControllerState extends State<MyPlayersController> {
     audioPlayer.dispose();
     if(audioCache != null) audioCache?.clearAll();
     audioCache = null;
+  }
+
+  Song previousSong(){
+    final index = widget.playlist.indexWhere((song) => song.title == this.song.title);
+    final newIndex = (index == 0) ? widget.playlist.length - 1 : index - 1;
+    return widget.playlist[newIndex];
+  }
+
+  Song nextSong(){
+    final index = widget.playlist.indexWhere((song) => song.title == this.song.title);
+    final int newIndex = (index < widget.playlist.length - 1) ? index + 1 : 0;
+    return widget.playlist[newIndex];
+  }
+
+  Song randomSong(){
+    final index = Random().nextInt(widget.playlist.length);
+    final newSong = widget.playlist[index];
+    return newSong;
   }
 }

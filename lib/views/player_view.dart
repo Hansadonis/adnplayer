@@ -107,9 +107,9 @@ class PlayerView extends StatelessWidget {
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(0.toString(), style: GoogleFonts.signika(fontSize: 18, color: Colors.red),),
-                            Text(position.inSeconds.toString(), style: GoogleFonts.signika(fontSize: 18, color: Colors.red),),
-                            Text(maxDuration.inSeconds.toString(), style: GoogleFonts.signika(fontSize: 18, color: Colors.red),),
+                            Text(redeableDuration(Duration(seconds: 0)), style: GoogleFonts.signika(fontSize: 18, color: Colors.red),),
+                            Text(redeableDuration(position), style: GoogleFonts.signika(fontSize: 18, color: Colors.red),),
+                            Text(redeableDuration(maxDuration), style: GoogleFonts.signika(fontSize: 18, color: Colors.red),),
                           ],
                         ),
                         Slider(
@@ -143,5 +143,13 @@ class PlayerView extends StatelessWidget {
   }
   SizedBox rowSpace(int value){
     return SizedBox(width: value.toDouble(),);
+  }
+
+  String redeableDuration(Duration duration){
+    int minutes = duration.inMinutes.remainder(60);
+    int seconds = duration.inSeconds.remainder(60);
+    String minutesStr = (minutes < 10) ? "0$minutes" : minutes.toString();
+    String secondsStr = (seconds < 10) ? "0$seconds" : seconds.toString();
+    return minutesStr + ":" + secondsStr;
   }
 }
