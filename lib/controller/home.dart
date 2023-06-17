@@ -1,3 +1,4 @@
+import 'package:adn_music_player/controller/search_controller.dart';
 import 'package:adn_music_player/model/row_model/bar_choice.dart';
 import 'package:adn_music_player/views/music_view.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,7 @@ class _HomeState extends State<Home> {
   List<Barchoice> items = [
     Barchoice(label: "Musique", iconData: Icons.music_note, page: MusicView()),
     Barchoice(label: "Favoris", iconData: Icons.whatshot, page: Container()),
-    Barchoice(label: "Musique", iconData: Icons.search, page: Container()),
+    Barchoice(label: "Recherche", iconData: Icons.search, page: SearchController()),
 
   ];
 

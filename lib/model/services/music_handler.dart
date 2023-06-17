@@ -62,4 +62,24 @@ class MusicHandler{
     }
     return playlist;
   }
+
+  List<Song> research(String string){
+      final lowercase = string.toLowerCase();
+      final all = datas.allDatas();
+      List<Song> result = [];
+      for(var song in all){
+        final artist = song.artist.name.toLowerCase();
+        final album = song.album.toLowerCase();
+        final title = song.title.toLowerCase();
+        if(
+          artist.contains(lowercase) ||
+          album.contains(lowercase) ||
+          title.contains(lowercase)
+        ){
+          result.add(song);
+        }
+      }
+      return result;
+  }
+
 }
