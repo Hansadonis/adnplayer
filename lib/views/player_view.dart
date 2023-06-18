@@ -107,7 +107,7 @@ class PlayerView extends StatelessWidget {
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(redeableDuration(Duration(seconds: 0)), style: GoogleFonts.signika(fontSize: 18, color: Colors.red),),
+
                             Text(redeableDuration(position), style: GoogleFonts.signika(fontSize: 18, color: Colors.red),),
                             Text(redeableDuration(maxDuration), style: GoogleFonts.signika(fontSize: 18, color: Colors.red),),
                           ],

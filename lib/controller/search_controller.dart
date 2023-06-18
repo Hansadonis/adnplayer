@@ -1,5 +1,6 @@
 import 'package:adn_music_player/model/row_model/song.dart';
 import 'package:adn_music_player/model/services/music_handler.dart';
+import 'package:adn_music_player/model/services/shared_handler.dart';
 import 'package:adn_music_player/views/cells/classic_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -22,6 +23,7 @@ class _SearchControllerState extends State<SearchController> {
   void initState() {
     super.initState();
     textEditingController = TextEditingController();
+    getSharePref();
   }
 
   @override
@@ -72,7 +74,17 @@ class _SearchControllerState extends State<SearchController> {
   }
 
   Widget emptyWidget(){
-    return Container(color: Colors.blueGrey,);
+    return ListView.separated(
+        itemBuilder: (context, index){
+          final String value = lastSearchedSong[index];
+          return ListTile(
+            title: Text(value),
+            onTap: (() => onTap(value)),
+            onLongPress: (() => remove(value)),
+          );
+        },
+        separatorBuilder: ((context, index) => Divider()),
+        itemCount: lastSearchedSong.length);
   }
 
   Widget onSearhWidget(){
@@ -83,8 +95,11 @@ class _SearchControllerState extends State<SearchController> {
     );
   }
 
-  onPressed(){
+  closeKeyboard() => FocusScope.of(context).requestFocus(FocusNode());
 
+  onPressed(){
+    closeKeyboard();
+    if(textEditingController.text != "") save(textEditingController.text);
   }
 
   search(String string){
@@ -94,7 +109,27 @@ class _SearchControllerState extends State<SearchController> {
     });
   }
 
-  save(String string){
-
+  save(String value){
+    SharedHandler().addItemToList(value).then((value) => getSharePref());
   }
+
+  getSharePref(){
+    SharedHandler().getList().then((newList) => {
+      setState((){
+        lastSearchedSong = newList;
+      })
+    });
+  }
+
+  onTap(String value){
+    textEditingController.text = value;
+    search(value);
+  }
+  
+  remove(String value){
+    SharedHandler().removeItemToList(value).then((success) => {
+      getSharePref(),
+    });
+  }
+
 }
